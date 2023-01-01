@@ -1,18 +1,20 @@
 import React from "react"
 
-const Headers = ({ getTab, active }) => {
-  let activeClass = active
+const Headers = ({ getTab, tabs, value }) => {
+  // let activeClass = active
   return (
     <div className='headers'>
-      <article className='header' onClick={() => getTab("tommy")}>
-        tommy
-      </article>
-      <article className='header' onClick={() => getTab("bigdrop")}>
-        bigdrop
-      </article>
-      <article className='header' onClick={() => getTab("cuker")}>
-        cuker
-      </article>
+      {tabs.map((tab, i) => {
+        return (
+          <article
+            className={`header ${value === i && "active"}`}
+            key={tab.id}
+            onClick={() => getTab(i)}
+          >
+            {tab.company}
+          </article>
+        )
+      })}
     </div>
   )
 }

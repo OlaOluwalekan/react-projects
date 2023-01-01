@@ -6,24 +6,10 @@ import { useEffect, useState } from "react"
 function App() {
   const [data, setData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
-  const [showTommy, setShowTommy] = useState(true)
-  const [showBigdrop, setShowBigdrop] = useState(false)
-  const [showCuker, setShowCuker] = useState(false)
+  const [value, setValue] = useState(0)
 
-  const getTab = (company) => {
-    if (company === "tommy") {
-      setShowTommy(true)
-      setShowBigdrop(false)
-      setShowCuker(false)
-    } else if (company === "bigdrop") {
-      setShowTommy(false)
-      setShowBigdrop(true)
-      setShowCuker(false)
-    } else {
-      setShowTommy(false)
-      setShowBigdrop(false)
-      setShowCuker(true)
-    }
+  const getTab = (i) => {
+    setValue(i)
   }
 
   const fetchData = async () => {
@@ -32,15 +18,12 @@ function App() {
       await fetch("https://course-api.com/react-tabs-project")
     ).json()
     setData(response)
-    // console.log(response[0])
     setIsLoading(false)
   }
 
   useEffect(() => {
     fetchData()
   }, [])
-
-  // console.log(data)
 
   if (isLoading) {
     return <div className='loading'>Loading...</div>
@@ -50,10 +33,8 @@ function App() {
     <div className='app'>
       <h1 className='head'>Experience</h1>
       <main className='content-container'>
-        <Headers getTab={getTab} />
-        {showTommy && <Content {...data[0]} />}
-        {showBigdrop && <Content {...data[1]} />}
-        {showCuker && <Content {...data[2]} />}
+        <Headers tabs={data} getTab={getTab} value={value} />
+        <Content {...data[value]} />
       </main>
       <button className='btn'>more info</button>
     </div>
