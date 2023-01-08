@@ -1,42 +1,165 @@
+import React, { useState, useEffect, useRef } from "react"
 import "./App.css"
-import Headers from "./Tabs/Headers"
-import Content from "./Tabs/Content"
-import { useEffect, useState } from "react"
+import List from "./Grocery-Bud/List"
+import Alert from "./Grocery-Bud/Alert"
 
-function App() {
-  const [data, setData] = useState({})
-  const [isLoading, setIsLoading] = useState(true)
-  const [value, setValue] = useState(0)
+const getLocalStorage = () => {
+  let items = localStorage.getItem("groceries")
+  if (items) {
+    return JSON.parse(localStorage.getItem("groceries"))
+  } else {
+    return []
+  }
+}
 
-  const getTab = (i) => {
-    setValue(i)
+const App = () => {
+  const [text, setText] = useState("")
+  const [list, setList] = useState(getLocalStorage())
+  const [editMode, setEditMode] = useState(false)
+  const [currentIndex, setCurrentIndex] = useState(null)
+  const [alert, setAlert] = useState({
+    show: false,
+    type: "success",
+    msg: "",
+  })
+  const inputRef = useRef(null)
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (text) {
+      if (editMode) {
+        updateItem(currentIndex)
+        setEditMode(false)
+      } else {
+        addToList()
+        setAlert({
+          show: true,
+          type: "success",
+          msg: "item added successfuly",
+        })
+      }
+      setText("")
+    } else {
+      setAlert({
+        show: true,
+        type: "fail",
+        msg: "this feild is required",
+      })
+    }
   }
 
-  const fetchData = async () => {
-    setIsLoading(true)
-    const response = await (
-      await fetch("https://course-api.com/react-tabs-project")
-    ).json()
-    setData(response)
-    setIsLoading(false)
+  const editItem = (id) => {
+    setEditMode(true)
+    let newList = list.find((t) => {
+      return t.id === id
+    })
+    setText(newList.text)
+    setCurrentIndex(id)
+  }
+
+  const updateItem = () => {
+    let newList = list.filter((item) => {
+      if (item.id === currentIndex) {
+        item.text = text
+      }
+      return item
+    })
+    setList(newList)
+    setAlert({
+      show: true,
+      type: "success",
+      msg: "item updated successfully",
+    })
+  }
+
+  const deleteItem = (id) => {
+    const newList = list.filter((item) => {
+      return item.id !== id
+    })
+    setList(newList)
+    setAlert({
+      show: true,
+      type: "fail",
+      msg: "item deleted!",
+    })
+  }
+
+  const addToList = () => {
+    let newList = {
+      id: new Date().getTime().toString(),
+      text,
+    }
+    setList([...list, newList])
+  }
+
+  const clearItems = () => {
+    setList([])
+    setAlert({
+      show: true,
+      type: "fail",
+      msg: "all items have been removed",
+    })
   }
 
   useEffect(() => {
-    fetchData()
-  }, [])
+    inputRef.current.focus()
+  }, [editMode])
 
-  if (isLoading) {
-    return <div className='loading'>Loading...</div>
-  }
+  useEffect(() => {
+    localStorage.setItem("groceries", JSON.stringify(list))
+  }, [list])
+
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      setAlert({
+        show: false,
+        type: "success",
+        msg: "hello",
+      })
+    }, 2000)
+
+    return () => {
+      clearTimeout(timeout)
+    }
+  }, [alert])
 
   return (
-    <div className='app'>
-      <h1 className='head'>Experience</h1>
-      <main className='content-container'>
-        <Headers tabs={data} getTab={getTab} value={value} />
-        <Content {...data[value]} />
-      </main>
-      <button className='btn'>more info</button>
+    <div className='App'>
+      <section className='container'>
+        <form className='form' onSubmit={handleSubmit}>
+          {alert.show && <Alert alertClass={alert.type} message={alert.msg} />}
+          <h1 className='site-name'>Grocery Bud</h1>
+          <article>
+            <input
+              type='text'
+              name='text'
+              id='text'
+              placeholder='e.g. egg'
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              ref={inputRef}
+            />
+            <button type='submit'>{editMode ? "Update" : "Add"}</button>
+          </article>
+        </form>
+        <section className='list-container'>
+          {list.map((li, i) => {
+            return (
+              <List
+                key={li.id}
+                {...li}
+                editItem={() => editItem(li.id)}
+                deleteItem={() => deleteItem(li.id)}
+              />
+            )
+          })}
+        </section>
+        {list.length !== 0 && (
+          <button className='clear-list' onClick={clearItems}>
+            Clear Items
+          </button>
+        )}
+      </section>
     </div>
   )
 }

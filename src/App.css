@@ -4,182 +4,133 @@
   box-sizing: border-box;
 }
 
-.app {
+.App {
+  width: 100vw;
+  min-height: 100vh;
+  background-color: aliceblue;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  /* min-height: 100vh; */
-  margin-top: 70px;
+  justify-content: flex-start;
 }
 
-.loading {
-  width: fit-content;
-  height: fit-content;
-  font-size: 30px;
-  font-weight: 700;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  margin: auto;
-}
-
-.head {
-  position: relative;
-  margin-bottom: 60px;
-}
-
-.head::after {
-  content: "";
-  width: 50%;
-  height: 5px;
-  background-color: turquoise;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -15px;
-  margin: 0 auto;
-}
-
-.content-container {
+.container {
   width: 90%;
-  max-width: 1000px;
+  max-width: 600px;
+  background-color: white;
+  margin-top: 8rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.headers {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 60%;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 50px;
-}
-
-.header {
-  /* position: relative; */
-  cursor: pointer;
-  transition: all 500ms ease;
-  padding: 10px 0;
-  border-bottom: 2px solid #1bb1a200;
-}
-
-.header:hover {
-  color: turquoise;
-  opacity: 0.85;
-  border-bottom: 2px solid #1bb1a2;
-}
-
-.active {
-  border-bottom: 2px solid #1bb1a2;
-}
-
-@media screen and (min-width: 900px) {
-  .content-container {
-    flex-direction: row;
-    align-items: flex-start;
-  }
-
-  .headers {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 170px;
-    padding-top: 10px;
-  }
-
-  .header {
-    text-align: left;
-    width: 100px;
-    padding-left: 10px;
-    border-left: 2px solid #1bb1a200;
-  }
-
-  .header:hover {
-    border-bottom: 2px solid #1bb1a200;
-    border-left: 2px solid #1bb1a2;
-  }
-
-  .active {
-    border-bottom: 2px solid #1bb1a200;
-    border-left: 2px solid #1bb1a2;
-  }
-}
-
-.content {
-  width: 90%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  margin: 15px 0;
-}
-
-.title {
-  font-weight: 300;
-  letter-spacing: 2px;
-}
-
-.company {
-  font-size: 15px;
-  font-weight: 600;
-  color: #1f1f1f;
-  background-color: #dddddd;
-  padding: 5px 10px;
   border-radius: 5px;
-  margin: 10px 0;
+  box-shadow: 0px 3px 7px #c2c2c2;
+  position: relative;
 }
 
-.dates {
-  color: grey;
-  margin: 10px 0;
-}
-
-.duties-list {
+.form {
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  padding: 2rem;
 }
 
-.duty {
+.form .site-name {
+  font-size: 25px;
+}
+
+.form article {
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+}
+
+.form input {
+  padding: 5px;
+  font-size: 16px;
+  width: 100%;
+  border: none;
+  background-color: aliceblue;
+  border-radius: 5px 0 0 5px;
+}
+
+.form button {
+  padding: 5px 30px;
+  font-size: 16px;
+  border: none;
+  background-color: #70c9ec;
+  color: white;
+  cursor: pointer;
+  border-radius: 0 5px 5px 0;
+}
+
+.list-container {
+  width: 90%;
+}
+
+.list {
+  margin: 10px 0;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  width: 90%;
-  margin: 10px 0;
+  padding: 10px;
 }
 
-.duty span {
-  font-size: 25px;
-  margin-right: 20px;
-  color: #1bb1a2;
+.list:hover {
+  background-color: aliceblue;
 }
 
-.duty p {
-  color: #5c5c5c;
-}
-
-.btn {
-  padding: 7px 30px;
-  background-color: #1bb1a2;
-  border: none;
-  text-transform: uppercase;
-  border-radius: 5px;
-  margin: 20px 0;
-  color: white;
-  font-weight: 600;
+.list span {
+  font-size: 13px;
+  opacity: 0.6;
   cursor: pointer;
 }
 
-.btn:hover {
+.action-btns {
+  text-align: right;
+}
+
+.edit-icon {
+  color: green;
+}
+
+.delete-icon {
+  color: red;
+  margin-left: 10px;
+}
+
+.list span:hover {
+  opacity: 1;
+}
+
+.clear-list {
+  border: none;
+  background: none;
+  color: red;
+  opacity: 0.6;
+  margin: 30px 0;
+  cursor: pointer;
+}
+
+.clear-list:hover {
+  opacity: 1;
+}
+
+.alert-box {
+  color: white;
+  padding: 3px 15px;
   opacity: 0.7;
+  border-radius: 5px;
+  font-size: 13px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.alert-box.success {
+  background-color: green;
+}
+
+.alert-box.fail {
+  background-color: #ff7e9e;
 }
